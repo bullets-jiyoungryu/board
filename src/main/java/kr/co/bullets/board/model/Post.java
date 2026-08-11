@@ -3,6 +3,8 @@ package kr.co.bullets.board.model;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+//public record Post(Long postId, String body, ZonedDateTime createdDateTime) {}
+
 public class Post {
 
   private Long postId;

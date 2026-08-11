@@ -1,6 +1,7 @@
 package kr.co.bullets.board.controller;
 
 import kr.co.bullets.board.model.Post;
+import kr.co.bullets.board.model.PostPatchRequestBody;
 import kr.co.bullets.board.model.PostPostRequestBody;
 import kr.co.bullets.board.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class PostController {
     //    posts.add(new Post(2L, "Post 2", ZonedDateTime.now()));
     //    posts.add(new Post(3L, "Post 3", ZonedDateTime.now()));
 
-    List<Post> posts = postService.getPosts();
+//    List<Post> posts = postService.getPosts();
+    var posts = postService.getPosts();
 
     //    return new ResponseEntity<>(posts, HttpStatus.OK);
 
@@ -53,6 +55,12 @@ public class PostController {
   public ResponseEntity<Post> createPost(@RequestBody PostPostRequestBody postPostRequestBody) {
 //    Post post = postService.createPost(postPostRequestBody);
     var post = postService.createPost(postPostRequestBody);
+    return ResponseEntity.ok(post);
+  }
+
+  @PatchMapping("/{postId}")
+  public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostPatchRequestBody postPatchRequestBody) {
+    var post = postService.updatePost(postId, postPatchRequestBody);
     return ResponseEntity.ok(post);
   }
 }
