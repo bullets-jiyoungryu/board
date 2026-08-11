@@ -110,7 +110,8 @@ Boot 3 시절의 `spring-boot-starter-web` / `spring-boot-starter-test`를 관�
 ## Git
 
 - 원격은 `github.com/bullets-jiyoungryu/board`, 기본 브랜치 `main`. 브랜치를 따로 파지 않고 `main`에 직접 커밋하는 방식으로 작업 중이다.
-- 커밋 메시지는 **Conventional Commits v1.0.0**을 따른다 (https://www.conventionalcommits.org/en/v1.0.0/). 본문·푸터 없이 **제목 한 줄**이 관례다.
+- 커밋 메시지는 **Conventional Commits v1.0.0**을 따른다 (https://www.conventionalcommits.org/en/v1.0.0/). 본문은 대체로 생략하고 **제목 한 줄**로 끝낸다.
+- 단, Claude가 만든 커밋에는 **`Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>` 트레일러를 반드시 붙인다** (제목 뒤 빈 줄 한 칸). GitHub 커밋 목록의 "and claude committed" 표시가 이 트레일러에서 나온다 — "제목 한 줄" 관례를 이유로 생략하지 말 것.
 - 실습 단계는 한 단계당 한 커밋으로 남긴다: `feat(post): 게시물을 위한 CRUD API(실습) - READ` / `- CREATE` / `- UPDATE` / `- DELETE`.
 - 사용자가 코드를 직접 작성한 뒤 커밋·푸시만 맡기는 흐름이 많다. 이때는 **소스를 손대지 말고** `./gradlew clean build`로 검증한 뒤 `git add` → 커밋 → `git push origin main`까지 한다.
 - `HELP.md`(Initializr 생성 문서)는 `.gitignore`에 등재되어 추적되지 않는다.
