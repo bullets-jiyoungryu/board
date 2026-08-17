@@ -38,6 +38,9 @@ spring:
     # DB 계정과 비밀번호. 실제 서비스에서는 이렇게 평문으로 두지 말고 환경변수나 시크릿으로 주입한다.
     username: board-master
     password: board-postgres-password
+  security:
+    user.name: board-admin
+    user.password: board-admin-password
 
 # 로깅 레벨 설정 — 필요할 때만 주석을 풀어 쓴다.
 #logging:
