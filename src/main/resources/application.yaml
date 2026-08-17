@@ -1,3 +1,54 @@
 spring:
   application:
+    # 애플리케이션 이름. 로그 배너, Actuator, 분산 추적 등에서 이 서비스를 식별하는 값으로 쓰인다.
     name: board
+  jpa:
+    # 사용할 DB 종류(Database enum). Hibernate dialect 를 자동으로 골라준다.
+    # 보통은 datasource URL 로 자동 감지되므로 생략해도 되고, 감지가 틀릴 때만 명시한다.
+    database: postgresql
+    # Hibernate 가 실행하는 SQL 을 표준 출력(System.out)에 찍는다. 개발용이며 prod 에서는 끈다.
+    # 로거를 타지 않기 때문에 로그 파일에는 안 남는다 — 파일로 남기려면 아래 logging.level 설정을 쓴다.
+    show-sql: true
+    hibernate:
+      # 스키마 자동 생성 전략 (hibernate.hbm2ddl.auto)
+      # create      : 시작할 때 기존 테이블을 drop 하고 새로 생성 (데이터 소실)
+      # create-drop : create + 애플리케이션 종료 시 drop
+      # update      : 엔티티와 스키마를 비교해 변경분만 반영 (컬럼 삭제는 안 함)
+      # validate    : 스키마만 검증하고 변경하지 않음. 불일치면 기동 실패
+      # none        : 아무것도 하지 않음
+      # create / create-drop / update / validate / none
+      # create-drop: prod 에서 절대 사용하면 안된다.
+      ddl-auto: create-drop
+      # SQL 을 보기 좋게 줄바꿈·들여쓰기해서 출력한다.
+      # 주의: 실제 키는 spring.jpa.properties.hibernate.format_sql 이라 여기 두면 적용되지 않는다.
+      format_sql: true
+      naming:
+        # 엔티티/필드 이름 → 실제 테이블·컬럼 이름 변환 규칙(물리 네이밍 전략).
+        # Standard 구현은 이름을 그대로 사용한다(camelCase 유지).
+        # Spring Boot 기본값인 CamelCaseToUnderscoresNamingStrategy 는 createdDateTime → created_date_time 으로 바꾼다.
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      # 여기 아래 값들은 Hibernate 에 그대로 전달되는 네이티브 설정이다.
+      # DB 방언(SQL 문법·함수·타입 차이)을 지정한다. 위의 spring.jpa.database 와 함께 명시적으로 못박는 용도.
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    # JDBC 접속 URL — 드라이버(postgresql) / 호스트:포트 / 데이터베이스명(board-db)
+    # 드라이버 클래스는 URL 로 자동 판별되므로 driver-class-name 은 생략했다.
+    url: jdbc:postgresql://localhost:5432/board-db
+    # DB 계정과 비밀번호. 실제 서비스에서는 이렇게 평문으로 두지 말고 환경변수나 시크릿으로 주입한다.
+    username: board-master
+    password: board-postgres-password
+
+# 로깅 레벨 설정 — 필요할 때만 주석을 풀어 쓴다.
+#logging:
+#  level:
+#    # 바인딩되는 파라미터 값까지 출력 (구버전 Hibernate 용 카테고리)
+#    org.hibernate.type: TRACE
+#    # ?, ?, ? 자리에 실제로 들어간 값을 출력 (Hibernate 6+ 카테고리)
+#    org.hibernate.orm.jdbc.bind: TRACE
+#    # 트랜잭션 begin/commit/rollback 시점 추적
+#    org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG
+#    # 스프링의 JPA(EntityManager) 처리 과정
+#    org.springframework.orm.jpa: DEBUG
+#    # 트랜잭션 경계 생성/전파 결정 과정
+#    org.springframework.transaction: DEBUG
