@@ -20,46 +20,27 @@ public class PostController {
 
   @GetMapping
   public ResponseEntity<List<Post>> getPosts() {
-    //    List<Post> posts = new ArrayList<>();
-    //    posts.add(new Post(1L, "Post 1", ZonedDateTime.now()));
-    //    posts.add(new Post(2L, "Post 2", ZonedDateTime.now()));
-    //    posts.add(new Post(3L, "Post 3", ZonedDateTime.now()));
-
-//    List<Post> posts = postService.getPosts();
     var posts = postService.getPosts();
-
-    //    return new ResponseEntity<>(posts, HttpStatus.OK);
-
     return ResponseEntity.ok(posts);
   }
 
   @GetMapping("/{postId}")
   public ResponseEntity<Post> getPostByPostId(@PathVariable Long postId) {
-    //    List<Post> posts = new ArrayList<>();
-    //    posts.add(new Post(1L, "Post 1", ZonedDateTime.now()));
-    //    posts.add(new Post(2L, "Post 2", ZonedDateTime.now()));
-    //    posts.add(new Post(3L, "Post 3", ZonedDateTime.now()));
-
-    //    Optional<Post> matchingPost =
-    //        posts.stream().filter(post -> postId.equals(post.getPostId())).findFirst();
-
-    Optional<Post> matchingPost = postService.getPostByPostId(postId);
-
-    return matchingPost
-        .map(ResponseEntity::ok)
-        .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    var post = postService.getPostByPostId(postId);
+    return ResponseEntity.ok(post);
   }
 
   // POST /posts
   @PostMapping
   public ResponseEntity<Post> createPost(@RequestBody PostPostRequestBody postPostRequestBody) {
-//    Post post = postService.createPost(postPostRequestBody);
+    //    Post post = postService.createPost(postPostRequestBody);
     var post = postService.createPost(postPostRequestBody);
     return ResponseEntity.ok(post);
   }
 
   @PatchMapping("/{postId}")
-  public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostPatchRequestBody postPatchRequestBody) {
+  public ResponseEntity<Post> updatePost(
+      @PathVariable Long postId, @RequestBody PostPatchRequestBody postPatchRequestBody) {
     var post = postService.updatePost(postId, postPatchRequestBody);
     return ResponseEntity.ok(post);
   }

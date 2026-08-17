@@ -1,69 +1,25 @@
 package kr.co.bullets.board.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import kr.co.bullets.board.model.entity.PostEntity;
+
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
-//public record Post(Long postId, String body, ZonedDateTime createdDateTime) {}
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record Post(
+    Long postId,
+    String body,
+    ZonedDateTime createdDateTime,
+    ZonedDateTime updatedDateTime,
+    ZonedDateTime deletedDateTime) {
 
-public class Post {
-
-  private Long postId;
-  private String body;
-  private ZonedDateTime createdDateTime;
-
-  public Post(Long postId, String body, ZonedDateTime createdDateTime) {
-    this.postId = postId;
-    this.body = body;
-    this.createdDateTime = createdDateTime;
-  }
-
-  public Long getPostId() {
-    return postId;
-  }
-
-  public void setPostId(Long postId) {
-    this.postId = postId;
-  }
-
-  public String getBody() {
-    return body;
-  }
-
-  public void setBody(String body) {
-    this.body = body;
-  }
-
-  public ZonedDateTime getCreatedDateTime() {
-    return createdDateTime;
-  }
-
-  public void setCreatedDateTime(ZonedDateTime createdDateTime) {
-    this.createdDateTime = createdDateTime;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof Post post)) return false;
-    return Objects.equals(getPostId(), post.getPostId())
-        && Objects.equals(getBody(), post.getBody())
-        && Objects.equals(getCreatedDateTime(), post.getCreatedDateTime());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(getPostId(), getBody(), getCreatedDateTime());
-  }
-
-  @Override
-  public String toString() {
-    return "Post{"
-        + "postId="
-        + postId
-        + ", body='"
-        + body
-        + '\''
-        + ", createdDateTime="
-        + createdDateTime
-        + '}';
+  public static Post from(PostEntity postEntity) {
+    return new Post(
+        postEntity.getPostId(),
+        postEntity.getBody(),
+        postEntity.getCreatedDateTime(),
+        postEntity.getUpdatedDateTime(),
+        postEntity.getDeletedDateTime());
   }
 }

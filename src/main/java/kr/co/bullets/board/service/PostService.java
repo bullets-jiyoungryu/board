@@ -3,6 +3,9 @@ package kr.co.bullets.board.service;
 import kr.co.bullets.board.model.Post;
 import kr.co.bullets.board.model.PostPatchRequestBody;
 import kr.co.bullets.board.model.PostPostRequestBody;
+import kr.co.bullets.board.model.entity.PostEntity;
+import kr.co.bullets.board.repository.PostEntityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,33 +18,27 @@ import java.util.Optional;
 @Service
 public class PostService {
 
-  private static final List<Post> posts = new ArrayList<>();
-
-  static {
-    posts.add(new Post(1L, "Post 1", ZonedDateTime.now()));
-    posts.add(new Post(2L, "Post 2", ZonedDateTime.now()));
-    posts.add(new Post(3L, "Post 3", ZonedDateTime.now()));
-  }
+  @Autowired private PostEntityRepository postEntityRepository;
 
   public List<Post> getPosts() {
-    return posts;
+    var postEntities = postEntityRepository.findAll();
+    return postEntities.stream().map(Post::from).toList();
   }
 
-  public Optional<Post> getPostByPostId(Long postId) {
-    return posts.stream().filter(post -> postId.equals(post.getPostId())).findFirst();
-    //    return posts.stream().filter(post -> postId.equals(post.postId())).findFirst();
+  public Post getPostByPostId(Long postId) {
+    var postEntity =
+        postEntityRepository
+            .findById(postId)
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found."));
+    return Post.from(postEntity);
   }
 
   public Post createPost(PostPostRequestBody postPostRequestBody) {
-    Long newPostId = posts.stream().mapToLong(Post::getPostId).max().orElse(0L) + 1;
-    //    var newPostId = posts.stream().mapToLong(Post::postId).max().orElse(0L) + 1;
-
-    //      Post newPost = new Post(newPostId, postPostRequestBody.getBody(), ZonedDateTime.now());
-    //      Post newPost = new Post(newPostId, postPostRequestBody.body(), ZonedDateTime.now());
-    var newPost = new Post(newPostId, postPostRequestBody.body(), ZonedDateTime.now());
-    posts.add(newPost);
-
-    return newPost;
+    var postEntity = new PostEntity();
+    postEntity.setBody(postPostRequestBody.body());
+    var savedPostEntity = postEntityRepository.save(postEntity);
+    return Post.from(savedPostEntity);
   }
 
   public Post updatePost(Long postId, PostPatchRequestBody postPatchRequestBody) {
