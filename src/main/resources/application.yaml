@@ -44,7 +44,7 @@ spring:
 logging:
   level:
     # TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
-    root: ERROR
+    root: INFO
 
 # 로깅 레벨 설정 — 필요할 때만 주석을 풀어 쓴다.
 #logging:

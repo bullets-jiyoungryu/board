@@ -1,5 +1,6 @@
 package kr.co.bullets.board.service;
 
+import kr.co.bullets.board.exception.post.PostNotFoundException;
 import kr.co.bullets.board.model.Post;
 import kr.co.bullets.board.model.PostPatchRequestBody;
 import kr.co.bullets.board.model.PostPostRequestBody;
@@ -30,7 +31,7 @@ public class PostService {
         postEntityRepository
             .findById(postId)
             .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found."));
+                () -> new PostNotFoundException(postId));
     return Post.from(postEntity);
   }
 
@@ -46,7 +47,7 @@ public class PostService {
         postEntityRepository
             .findById(postId)
             .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found."));
+                () -> new PostNotFoundException(postId));
     postEntity.setBody(postPatchRequestBody.body());
     var updatedPostEntity = postEntityRepository.save(postEntity);
     return Post.from(updatedPostEntity);
@@ -57,7 +58,7 @@ public class PostService {
         postEntityRepository
             .findById(postId)
             .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found."));
+                () -> new PostNotFoundException(postId));
     postEntityRepository.delete(postEntity);
   }
 }
