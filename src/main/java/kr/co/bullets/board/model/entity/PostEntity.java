@@ -8,7 +8,9 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "post")
+@Table(
+    name = "post",
+    indexes = {@Index(name = "post_userid_idx", columnList = "userid")})
 // 소프트 삭제(soft delete) — 이 엔티티를 delete 할 때 실행할 SQL 을 직접 지정한다.
 // 기본 동작인 `DELETE FROM post WHERE postid=?` 대신 아래 UPDATE 가 나가므로,
 // 행은 그대로 남고 deleteddatetime 에 삭제 시각만 기록된다.
@@ -39,6 +41,10 @@ public class PostEntity {
   @Column private ZonedDateTime updatedDateTime;
 
   @Column private ZonedDateTime deletedDateTime;
+
+  @ManyToOne
+  @JoinColumn(name = "userid")
+  private UserEntity user;
 
   public Long getPostId() {
     return postId;
@@ -80,6 +86,14 @@ public class PostEntity {
     this.deletedDateTime = deletedDateTime;
   }
 
+  public UserEntity getUser() {
+    return user;
+  }
+
+  public void setUser(UserEntity user) {
+    this.user = user;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof PostEntity that)) return false;
@@ -87,13 +101,19 @@ public class PostEntity {
         && Objects.equals(getBody(), that.getBody())
         && Objects.equals(getCreatedDateTime(), that.getCreatedDateTime())
         && Objects.equals(getUpdatedDateTime(), that.getUpdatedDateTime())
-        && Objects.equals(getDeletedDateTime(), that.getDeletedDateTime());
+        && Objects.equals(getDeletedDateTime(), that.getDeletedDateTime())
+        && Objects.equals(getUser(), that.getUser());
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        getPostId(), getBody(), getCreatedDateTime(), getUpdatedDateTime(), getDeletedDateTime());
+        getPostId(),
+        getBody(),
+        getCreatedDateTime(),
+        getUpdatedDateTime(),
+        getDeletedDateTime(),
+        getUser());
   }
 
   @PrePersist

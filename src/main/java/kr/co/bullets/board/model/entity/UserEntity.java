@@ -14,7 +14,9 @@ import java.util.Objects;
 import java.util.Random;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(
+    name = "\"user\"",
+    indexes = {@Index(name = "user_username_idx", columnList = "username", unique = true)})
 @SQLDelete(sql = "UPDATE \"user\" SET deletedDateTime = CURRENT_TIMESTAMP WHERE userId = ?")
 @SQLRestriction("deletedDateTime IS NULL")
 public class UserEntity implements UserDetails {
@@ -160,7 +162,8 @@ public class UserEntity implements UserDetails {
     userEntity.setPassword(password);
 
     // Set random profile image url
-    userEntity.setProfile("https://avatar.iran.liara.run/public/" + (new Random().nextInt(100) + 1));
+    userEntity.setProfile(
+        "https://avatar.iran.liara.run/public/" + (new Random().nextInt(100) + 1));
     return userEntity;
   }
 
