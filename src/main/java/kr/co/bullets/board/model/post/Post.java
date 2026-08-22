@@ -1,10 +1,9 @@
-package kr.co.bullets.board.model;
+package kr.co.bullets.board.model.post;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import kr.co.bullets.board.model.entity.PostEntity;
 
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record Post(

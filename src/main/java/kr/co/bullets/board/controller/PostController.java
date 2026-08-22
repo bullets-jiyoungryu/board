@@ -1,9 +1,9 @@
 package kr.co.bullets.board.controller;
 
 import java.util.List;
-import kr.co.bullets.board.model.Post;
-import kr.co.bullets.board.model.PostPatchRequestBody;
-import kr.co.bullets.board.model.PostPostRequestBody;
+import kr.co.bullets.board.model.post.Post;
+import kr.co.bullets.board.model.post.PostPatchRequestBody;
+import kr.co.bullets.board.model.post.PostPostRequestBody;
 import kr.co.bullets.board.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

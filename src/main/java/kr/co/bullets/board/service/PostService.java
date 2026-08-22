@@ -1,20 +1,15 @@
 package kr.co.bullets.board.service;
 
 import kr.co.bullets.board.exception.post.PostNotFoundException;
-import kr.co.bullets.board.model.Post;
-import kr.co.bullets.board.model.PostPatchRequestBody;
-import kr.co.bullets.board.model.PostPostRequestBody;
+import kr.co.bullets.board.model.post.Post;
+import kr.co.bullets.board.model.post.PostPatchRequestBody;
+import kr.co.bullets.board.model.post.PostPostRequestBody;
 import kr.co.bullets.board.model.entity.PostEntity;
 import kr.co.bullets.board.repository.PostEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {

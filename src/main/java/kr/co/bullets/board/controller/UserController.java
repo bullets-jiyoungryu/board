@@ -1,10 +1,10 @@
 package kr.co.bullets.board.controller;
 
+import jakarta.validation.Valid;
 import kr.co.bullets.board.model.user.User;
 import kr.co.bullets.board.model.user.UserSignUpRequestBody;
 import kr.co.bullets.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ public class UserController {
   @Autowired UserService userService;
 
   @PostMapping
-  public ResponseEntity<User> signUp(@RequestBody UserSignUpRequestBody userSignUpRequestBody) {
+  public ResponseEntity<User> signUp(@Valid @RequestBody UserSignUpRequestBody userSignUpRequestBody) {
     var user =
         userService.signUp(userSignUpRequestBody.username(), userSignUpRequestBody.password());
     return ResponseEntity.ok(user);

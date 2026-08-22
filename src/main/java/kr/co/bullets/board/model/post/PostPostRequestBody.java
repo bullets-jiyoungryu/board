@@ -1,6 +1,4 @@
-package kr.co.bullets.board.model;
-
-import java.util.Objects;
+package kr.co.bullets.board.model.post;
 
 public record PostPostRequestBody(String body) {}
 

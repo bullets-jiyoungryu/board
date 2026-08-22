@@ -1,4 +1,4 @@
-package kr.co.bullets.board.model;
+package kr.co.bullets.board.model.post;
 
 public record PostPatchRequestBody(String body) {}
 
