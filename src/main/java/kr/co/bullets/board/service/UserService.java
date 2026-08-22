@@ -4,6 +4,7 @@ import kr.co.bullets.board.exception.user.UserAlreadyExistsException;
 import kr.co.bullets.board.exception.user.UserNotFoundException;
 import kr.co.bullets.board.model.entity.UserEntity;
 import kr.co.bullets.board.model.user.User;
+import kr.co.bullets.board.model.user.UserAuthenticationResponse;
 import kr.co.bullets.board.repository.UserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
   @Autowired private UserEntityRepository userEntityRepository;
   @Autowired private BCryptPasswordEncoder passwordEncoder;
+  @Autowired private JwtService jwtService;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,5 +38,17 @@ public class UserService implements UserDetailsService {
     userEntityRepository.save(userEntity);
 
     return User.from(userEntity);
+  }
+
+  public UserAuthenticationResponse login(String username, String password) {
+    var userEntity =
+        userEntityRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+
+    if (passwordEncoder.matches(password, userEntity.getPassword())) {
+      var accessToken = jwtService.generateToken(userEntity);
+      return new UserAuthenticationResponse(accessToken);
+    } else {
+      throw new UserNotFoundException();
+    }
   }
 }
