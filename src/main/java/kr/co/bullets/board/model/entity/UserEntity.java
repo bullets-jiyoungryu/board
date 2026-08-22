@@ -160,7 +160,7 @@ public class UserEntity implements UserDetails {
     userEntity.setPassword(password);
 
     // Set random profile image url
-    userEntity.setProfile("https://avatar.iran.liara.run/public/" + new Random().nextInt(100));
+    userEntity.setProfile("https://avatar.iran.liara.run/public/" + (new Random().nextInt(100) + 1));
     return userEntity;
   }
 
