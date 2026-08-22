@@ -116,6 +116,13 @@ public class PostEntity {
         getUser());
   }
 
+  public static PostEntity of(String body, UserEntity user) {
+    PostEntity post = new PostEntity();
+    post.setBody(body);
+    post.setUser(user);
+    return post;
+  }
+
   @PrePersist
   private void prePersist() {
     this.createdDateTime = ZonedDateTime.now();
